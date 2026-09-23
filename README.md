@@ -1,3 +1,30 @@
+# USMANI OS
+
+Personal productivity, business-building, and long-term wealth operating system.
+
+## Foundation
+
+The current stage establishes the App Router shell, dashboard foundation, navigation map, and placeholder module routes. It intentionally has no authentication, persistence, database, API routes, or business logic.
+
+Supabase infrastructure is defined in `supabase/migrations`. Apply it with the Supabase CLI using `supabase db push` after linking this project with `supabase link`. The CLI is intentionally not bundled as an application dependency.
+
+After linking the project, generate typed database definitions with `npm run db:types`. The generated `types/database.ts` file should be committed and refreshed whenever migrations change.
+
+## Run locally
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Checks
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
