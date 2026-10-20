@@ -1,6 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { getAuthorizationMode } from "./authorization-mode";
 
 export const DEVICE_COOKIE_NAME = "usmani_device_credential";
+export const MAX_ACTIVE_DEVICES = 3;
 const DEVICE_COOKIE_MAX_AGE = 60 * 60 * 24 * 730;
 
 type DeviceHashRow = { id: string; credential_hash: string };
@@ -33,7 +35,7 @@ export function constantTimeEqual(left: string, right: string) {
 export function deviceCookieOptions() {
   return {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: getAuthorizationMode() === "production",
     sameSite: "lax" as const,
     path: "/",
     maxAge: DEVICE_COOKIE_MAX_AGE,

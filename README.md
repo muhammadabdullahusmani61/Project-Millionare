@@ -20,7 +20,11 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 AUTHORIZED_USER_ID=
 ```
 
-`AUTHORIZED_USER_ID` is server-only and must contain the UUID of the single Supabase Auth user allowed into USMANI OS. There is no public signup flow. The first two approved browsers must be enrolled from `/device-authorize`; device credentials are stored only in secure HttpOnly cookies and their hashes are stored in `user_devices`.
+Set `AUTHORIZATION_MODE=development` in `.env.development.local` for local development. Cloudflare configuration supplies `AUTHORIZATION_MODE` from its explicit deployment mode and rejects missing or unsupported modes; production deployment must use `--mode production`.
+
+`AUTHORIZED_USER_ID` and `AUTHORIZATION_MODE` are server-only. There is no public signup flow. Production requires an approved device credential and permits at most three active devices. Credentials are stored only in secure HttpOnly cookies and their hashes are stored in `user_devices`.
+
+Local development still uses the Supabase project configured in `.env.local` for authentication and other application data. It skips production device-credential checks and never reads or mutates production `user_devices` rows; this is not full database isolation.
 
 ## Run locally
 

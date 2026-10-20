@@ -1,10 +1,12 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { getAuthorizationMode } from '@/lib/auth/authorization-mode';
 import { getAuthorizedUserId, safeRedirectPath } from '@/lib/auth/config';
 import { DEVICE_COOKIE_NAME, validateDeviceCredential } from '@/lib/auth/device';
 import { getSupabaseEnv } from './env';
 
 export async function updateSession(request: NextRequest) {
+  const authorizationMode = getAuthorizationMode();
   let response = NextResponse.next({ request });
   const { url, publishableKey } = getSupabaseEnv();
 
@@ -50,7 +52,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (userId !== getAuthorizedUserId()) return redirect('/access-denied');
-  if (isDeviceEnrollment) return response;
+  if (authorizationMode === 'development' || isDeviceEnrollment) return response;
 
   const deviceId = await validateDeviceCredential(supabase, userId, request.cookies.get(DEVICE_COOKIE_NAME)?.value);
   if (!deviceId) {
